@@ -4,6 +4,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "mysql-utilities": "^1.1.4",
     "querystring": "^0.2.1",
     "request": "^2.88.2"
   }
