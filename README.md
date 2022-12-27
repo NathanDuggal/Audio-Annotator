@@ -9,4 +9,4 @@ dependencies:
  - querystring
  - mysql-utilities
 
-while in developedment, users must be added to Spotify app service
+while in developedment users must be added to Spotify app service
