@@ -17,6 +17,29 @@
   </head>
 
   <body>
+
+    <dive>
+      <!-- <form action="" method="POST"> -->
+        <input id="input" type="text" annotation="annotationExample" placeholder="annotationExample">
+        <button onclick="post()">create annotation</button>
+        <script>
+          function post() {
+            $.post("/annotate",
+            {
+              id: 1,
+              body: document.getElementById("input").value
+            },
+            function(data, status) {
+              if(status === "success") {
+                console.log("Post successfully created!")
+              }
+            },
+            "json")
+          }
+        </script>
+      <!-- </form> -->
+    </dive>
+
     <div class="container">
       <div id="login">
         <h1>This is an example of the Authorization Code flow</h1>

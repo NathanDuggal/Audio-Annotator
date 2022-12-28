@@ -10,9 +10,12 @@
 var dotenv = require('dotenv').config({path: __dirname + '/.env'})
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
-var cors = require('cors');
+var cors = require('cors'); //so front end and back end can share data
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+
+//from other sus website
+const bodyParser = require('body-parser') //parse incoming requests
 
 const CLIENT_ID = process.env.CLIENT_ID || 'none';
 const CLIENT_SECRET = process.env.CLIENT_SECRET || 'none';
@@ -20,6 +23,9 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET || 'none';
 var client_id = CLIENT_ID; // Your client id
 var client_secret = CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
+
+//database
+var mysql = require('mysql');
 
 /**
  * Generates a random string containing numbers and letters
@@ -39,6 +45,29 @@ var generateRandomString = function(length) {
 var stateKey = 'spotify_auth_state';
 
 var app = express();
+var router = express.Router();
+
+//database stuff
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "Cisc0123!"
+});
+
+//console.log("meowmeow")
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+//end database stuff
+
+//more stuff from sus website lol
+// We are using our packages here
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+ extended: true})); 
+app.use(cors())
+//end stuff
 
 app.use(express.static(__dirname + '/public'))
    .use(cors())
@@ -145,7 +174,20 @@ app.get('/refresh_token', function(req, res) {
       });
     }
   });
+  
+  //Start your server on a specified port
+  app.listen(port, ()=>{
+    console.log(`Server is runing on port ${port}`)
+  })
+
 });
+
+//Route that handles annotation logic
+app.post('/annotate', (req, res) =>{ 
+  var data = req;
+  console.log(data.body) //req.body.annotation
+  res.end("meow!!!")
+})
 
 console.log('Listening on 8888');
 app.listen(8888);
