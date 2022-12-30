@@ -14,15 +14,21 @@
             {
                 song: document.getElementById("input").value
             }, 
-            null, 
+            function(data) {
+                console.log(data);
+            }, 
             "json");
         }
     
         function getData() {
-            $.get("/getData",
-            {
-
-            })
+            // Fetch is a condensed get request
+            fetch("/getData")
+                .then(function(response) {
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log(data);
+                });
         }
     </script>
 </head>

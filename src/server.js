@@ -24,7 +24,7 @@ app.post('/music', function(req, res) {
 
 app.get('/getData', function(req,res) {
   // make some calls to database, fetch some data, information, check state, etc...
-  var dataToSendToClient = {'message': 'error message from server'};
+  var dataToSendToClient = {'message': 'message from server'};
   // convert whatever we want to send (preferably should be an object) to JSON
   var JSONdata = JSON.stringify(dataToSendToClient);
   res.send(JSONdata);
