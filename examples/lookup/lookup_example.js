@@ -10,7 +10,7 @@ var fetchTracks = function (albumId, callback) {
         url: 'https://api.spotify.com/v1/albums/' + albumId,
         success: function (response) {
             callback(response);
-        }
+        }   
     });
 };
 

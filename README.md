@@ -5,6 +5,7 @@ Webapp for adding shareable comments to audio using the Spotify API
 dependencies:
  - dotenv
  - express
+ - body-parser
  - request
  - querystring
  - mysql-utilities

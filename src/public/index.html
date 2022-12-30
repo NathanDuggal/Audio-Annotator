@@ -1,0 +1,28 @@
+<body>
+    <form action="/music" method="post">
+    </form>
+    <input id="input" type="text" name="fname" required>
+    <button onclick="post()" value="Submit">Submit</button>
+    <p id="text">This is where data goes</p>
+    <button onclick="getData()">Get Data</button>
+</body>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script>
+        function post() {
+            $.post("/music", 
+            {
+                song: document.getElementById("input").value
+            }, 
+            null, 
+            "json");
+        }
+    
+        function getData() {
+            $.get("/getData",
+            {
+
+            })
+        }
+    </script>
+</head>

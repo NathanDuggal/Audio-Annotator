@@ -1,12 +1,34 @@
-/* Load the HTTP library */
-var http = require('http');
+const dotenv = require('dotenv').config({path: __dirname + '/.env'})
+const express = require('express'); // Express web server framework
+const bodyParser = require("body-parser");
+const request = require('request'); // "Request" library
+const cors = require('cors');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 
-/* Create an HTTP server to handle responses */
+var app = express();
 
-http
-  .createServer(function(request, response) {
-    response.writeHead(200, { 'Content-Type': 'text/plain' });
-    response.write('Hello World');
-    response.end();
-  })
-  .listen(8888);
+app.use(express.static(__dirname + '/public'))
+    .use(cors())
+    .use(cookieParser())
+    .use(bodyParser.urlencoded({
+      extended: true
+    }))
+    .use(bodyParser.json());
+
+
+app.post('/music', function(req, res) {
+  console.log(req.body.song);
+  res.send("hello");
+});
+
+app.get('/getData', function(req,res) {
+  // make some calls to database, fetch some data, information, check state, etc...
+  var dataToSendToClient = {'message': 'error message from server'};
+  // convert whatever we want to send (preferably should be an object) to JSON
+  var JSONdata = JSON.stringify(dataToSendToClient);
+  res.send(JSONdata);
+});
+
+console.log('Listening on 8888');
+app.listen(8888);
