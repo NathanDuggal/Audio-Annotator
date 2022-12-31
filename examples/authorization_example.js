@@ -19,13 +19,14 @@ const bodyParser = require('body-parser') //parse incoming requests
 
 const CLIENT_ID = process.env.CLIENT_ID || 'none';
 const CLIENT_SECRET = process.env.CLIENT_SECRET || 'none';
+const SQL_PASSWORD = process.env.SQL_PASSWORD || 'none';
 
 var client_id = CLIENT_ID; // Your client id
 var client_secret = CLIENT_SECRET; // Your secret
 var redirect_uri = 'http://localhost:8888/callback'; // Your redirect uri
 
 //database
-var mysql = require('mysql');
+var mysql = require('mysql2');
 
 /**
  * Generates a random string containing numbers and letters
@@ -51,13 +52,65 @@ var router = express.Router();
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "Cisc0123!"
+  password: SQL_PASSWORD,
+  database: 'sitepoint'
 });
 
 //console.log("meowmeow")
 con.connect(function(err) {
   if (err) throw err;
   console.log("Connected!");
+});
+
+//READING
+con.query('SELECT * FROM annotations0', (err,rows) => { //Process via parsing.
+  if(err) throw err;
+
+  console.log('Data received from Db:');
+  console.log(rows);
+});
+
+//CREATING (when song doesn't exist yet)
+const song = { song: 'new_song', data: 'new_data' }; //take in user input !TODO
+con.query('INSERT INTO annotations0 SET ?', song, (err, res) => {
+  if(err) throw err;
+
+  console.log('Last insert ID:', res.insertId);
+});
+
+//UPDATING (when a song gets a new annotation)
+con.query(
+  'UPDATE annotations0 SET data = ? Where song = ?',
+  ['updated_data', 'new_song'],
+  (err, result) => {
+    if (err) throw err;
+
+    console.log(`Changed ${result.changedRows} row(s)`);
+  }
+);
+
+
+//KOT SUS
+var songName = 'KillShot' //song being annotated
+var colNum = 0 //the next availible column
+var data = "NEWLY INSERTED" //the data being inserted
+
+con.connect(function(err) {
+  if (err) throw err;
+  var sql = "INSERT INTO annotations0 (colNum) VALUES (data) WHERE song = 'songName'";
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted, ID: " + result.insertId);
+  });
+});
+
+
+
+//closing the database, don't add database stuff after this
+con.end((err) => {
+  // The connection is terminated gracefully
+  // Ensures all remaining queries are executed
+  // Then sends a quit packet to the MySQL server.
 });
 //end database stuff
 
