@@ -9,16 +9,29 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script>
-        function post() {
-            $.post("/music", 
+
+        $("input").keypress(function (e) {
+            if(e.which === 13 && !e.shiftKey) {
+                e.preventDefault();
+            
+                $(this).closest("form").submit();
+            }
+        });
+
+        async function post() {
+            await $.post("/music", 
             {
                 song: document.getElementById("input").value
             }, 
             function(data) {
                 console.log(data);
             }, 
-            "json");
-            getData();
+            "json").catch((error) => {
+                console.error(`Could not get products: ${error}`);
+            });
+            //setTimeout(() => {  console.log("Waited!"); }, 100);
+            console.log("here");
+            //getData();
         }
     
         function getData() {

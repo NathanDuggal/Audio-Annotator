@@ -25,19 +25,14 @@ app.post('/music', function(req, res) {
   console.log("Recieved post to /music");
   console.log(req.body.song);
   dataVal = Number(req.body.song);
-  console.log(dataVal);
-  res.end();
-});
 
-// Get requests are usually used to send information to the client?
-app.get('/getMusic', function(req, res) {
-  console.log("Recieved get to /music");
   var dataToSendToClient = {'data': data[dataVal]};
   // convert whatever we want to send (preferably should be an object) to JSON
   var JSONdata = JSON.stringify(dataToSendToClient);
   res.send(JSONdata);
 });
 
+// Get requests are usually used to send information to the client?
 app.get('/getData', function(req,res) {
   // make some calls to database, fetch some data, information, check state, etc...
   var dataToSendToClient = {'message': 'message from server'};
