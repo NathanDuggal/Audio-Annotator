@@ -24,11 +24,16 @@ app.use(express.static(__dirname + '/public'))
 app.post('/music', function(req, res) {
   console.log("Recieved post to /music");
   console.log(req.body.song);
-  dataVal = Number(req.body.song);
+  var JSONdata;
+  try {
+    dataVal = Number(req.body.song);
+    var dataToSendToClient = {'data': data[dataVal]};
+     // convert whatever we want to send (preferably should be an object) to JSON
+    JSONdata = JSON.stringify(dataToSendToClient);
+  } catch(error) {
+    res.status(400).send("Bad input");
+  }
 
-  var dataToSendToClient = {'data': data[dataVal]};
-  // convert whatever we want to send (preferably should be an object) to JSON
-  var JSONdata = JSON.stringify(dataToSendToClient);
   res.send(JSONdata);
 });
 
